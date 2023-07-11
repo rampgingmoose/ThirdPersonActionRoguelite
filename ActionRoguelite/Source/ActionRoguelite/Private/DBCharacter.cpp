@@ -2,11 +2,12 @@
 
 
 #include "DBCharacter.h"
-
+#include "DBCharacter.h"
 #include "DBMagicProjectile.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "DBInteractionComponent.h"
 
 // Sets default values
 ADBCharacter::ADBCharacter()
@@ -21,6 +22,9 @@ ADBCharacter::ADBCharacter()
 	CameraComp = CreateDefaultSubobject<UCameraComponent>("CameraComp");
 	CameraComp->SetupAttachment(SpringArmComp);
 
+	InteractionComp = CreateDefaultSubobject<UDBInteractionComponent>("InteractionComp");
+	
+	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	bUseControllerRotationYaw = false;
@@ -53,6 +57,7 @@ void ADBCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ADBCharacter::PrimaryAttack);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &ADBCharacter::PrimaryInteract);
 }
 
 void ADBCharacter::MoveForward(float Value)
@@ -77,6 +82,16 @@ void ADBCharacter::MoveRight(float Value)
 
 void ADBCharacter::PrimaryAttack()
 {
+	PlayAnimMontage(AttackAnim);
+
+	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &ADBCharacter::PrimaryAttack_TimeElapsed, 0.2f);
+
+	//Stop Attack if player character is killed
+	//GetWorldTimerManager().ClearTimer(TimerHandle_PrimaryAttack);
+}
+
+void ADBCharacter::PrimaryAttack_TimeElapsed()
+{
 	FVector GunLocation= GetMesh()->GetSocketLocation("gun_pin");
 	
 	FTransform SpawnTM = FTransform(GetControlRotation(),GunLocation);
@@ -84,6 +99,14 @@ void ADBCharacter::PrimaryAttack()
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+}
+
+void ADBCharacter::PrimaryInteract()
+{
+	if(InteractionComp != nullptr)
+	{
+		InteractionComp->PrimaryInteract();
+	}
 }
 
 
