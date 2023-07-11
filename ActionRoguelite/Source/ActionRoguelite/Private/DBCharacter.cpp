@@ -92,9 +92,9 @@ void ADBCharacter::PrimaryAttack()
 
 void ADBCharacter::PrimaryAttack_TimeElapsed()
 {
-	FVector GunLocation= GetMesh()->GetSocketLocation("gun_pin");
+	FVector HandLocation= GetMesh()->GetSocketLocation("Muzzle_01");
 	
-	FTransform SpawnTM = FTransform(GetControlRotation(),GunLocation);
+	FTransform SpawnTM = FTransform(GetControlRotation(),HandLocation);
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	
