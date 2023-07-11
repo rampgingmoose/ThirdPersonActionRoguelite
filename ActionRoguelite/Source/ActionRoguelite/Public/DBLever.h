@@ -4,21 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "DBGameplayInterface.h"
+#include "DBInteractionComponent.h"
 #include "GameFramework/Actor.h"
-#include "DBItemChest.generated.h"
+#include "DBLever.generated.h"
 
 class UStaticMeshComponent;
 
 UCLASS()
-class ACTIONROGUELITE_API ADBItemChest : public AActor, public IDBGameplayInterface
+class ACTIONROGUELITE_API ADBLever : public AActor, public IDBGameplayInterface
 {
 	GENERATED_BODY()
-
-public:
-
-	UPROPERTY(EditAnywhere)
-	float TargetPitch;
 	
+public:	
+	// Sets default values for this actor's properties
+	ADBLever();
+
+	float TargetPitch;
+
 	void Interact_Implementation(APawn* InstigatorPawn) override;
 
 protected:
@@ -28,13 +30,14 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* BaseMesh;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* LidMesh;
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* LeverMesh;
+
+	UPROPERTY(VisibleAnywhere)
+	UDBInteractionComponent* InteractComp;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Sets default values for this actor's properties
-	ADBItemChest();
 };
