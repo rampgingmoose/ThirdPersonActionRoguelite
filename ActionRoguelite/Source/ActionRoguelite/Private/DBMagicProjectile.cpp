@@ -2,28 +2,37 @@
 
 
 #include "DBMagicProjectile.h"
+
+#include "DBAttributesComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "DBAttributesComponent.h"
 
 // Sets default values
 ADBMagicProjectile::ADBMagicProjectile()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	
+	MoveComp->InitialSpeed = 2000.0f;
 
-	SphereComp = CreateDefaultSubobject<USphereComponent>("SphereComp");
-	SphereComp->SetCollisionObjectType(ECC_WorldDynamic);
-	SphereComp->SetCollisionProfileName("Projectile");
-	RootComponent = SphereComp;
+	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &ADBMagicProjectile::OnActorOverlap);
+}
 
-	ParticleComp = CreateDefaultSubobject<UParticleSystemComponent>("EffectComp");
-	ParticleComp->SetupAttachment(SphereComp);
+void ADBMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(OtherActor)
+	{
+		UDBAttributesComponent *AttributeComp = Cast<UDBAttributesComponent>(OtherActor->GetComponentByClass(UDBAttributesComponent::StaticClass()));
+		if(AttributeComp)
+		{
+			AttributeComp->ApplyHealthChange(-20.0f);
 
-	MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>("MovementComp");
-	MovementComp->InitialSpeed = 1000.0f;
-	MovementComp->bRotationFollowsVelocity = true;
-	MovementComp->bInitialVelocityInLocalSpace = true;
+			Destroy();
+		}
+	}
 }
 
 // Called when the game starts or when spawned

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DBProjectileBase.h"
 #include "GameFramework/Actor.h"
 #include "DBMagicProjectile.generated.h"
 
@@ -11,7 +12,7 @@ class UProjectileMovementComponent;
 class UParticleSystemComponent;
 
 UCLASS()
-class ACTIONROGUELITE_API ADBMagicProjectile : public AActor
+class ACTIONROGUELITE_API ADBMagicProjectile : public ADBProjectileBase
 {
 	GENERATED_BODY()
 	
@@ -20,14 +21,9 @@ public:
 	ADBMagicProjectile();
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	USphereComponent* SphereComp;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UProjectileMovementComponent* MovementComp;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UParticleSystemComponent* ParticleComp;
+	UFUNCTION()
+	void OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

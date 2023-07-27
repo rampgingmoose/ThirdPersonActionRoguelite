@@ -2,10 +2,13 @@
 
 
 #include "DBCharacter.h"
+#include "DBCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DBInteractionComponent.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "DBAttributesComponent.h"
 
 // Sets default values
 ADBCharacter::ADBCharacter()
@@ -21,7 +24,8 @@ ADBCharacter::ADBCharacter()
 	CameraComp->SetupAttachment(SpringArmComp);
 
 	InteractionComp = CreateDefaultSubobject<UDBInteractionComponent>("InteractionComp");
-	
+
+	AttributesComp = CreateDefaultSubobject<UDBAttributesComponent>("AttributesComp");
 	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
@@ -71,7 +75,6 @@ void ADBCharacter::MoveRight(float Value)
 	FRotator ControlRot = GetControlRotation();
 	ControlRot.Pitch = 0.0f;
 	ControlRot.Roll = 0.0f;
-
 	
 	FVector RightVector = FRotationMatrix(ControlRot).GetScaledAxis(EAxis::Y);
 	
@@ -90,15 +93,62 @@ void ADBCharacter::PrimaryAttack()
 
 void ADBCharacter::PrimaryAttack_TimeElapsed()
 {
-	FVector HandLocation= GetMesh()->GetSocketLocation("Muzzle_01");
-	
-	FTransform SpawnTM = FTransform(GetControlRotation(),HandLocation);
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	SpawnParams.Instigator = this;
-	
-	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+	SpawnProjectile(ProjectileClass);
 }
+
+void ADBCharacter::Dash()
+{
+	PlayAnimMontage(AttackAnim);
+
+	GetWorldTimerManager().SetTimer(TimerHandle_Dash, this, &ADBCharacter::Dash_TimeElapsed, 0.2f);
+}
+
+void ADBCharacter::Dash_TimeElapsed()
+{
+	SpawnProjectile(DashProjectileClass);
+}
+
+
+void ADBCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
+{
+	if(ensureAlways(ClassToSpawn))
+	{
+		FVector HandLocation= GetMesh()->GetSocketLocation("Muzzle_01");
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		SpawnParams.Instigator = this;
+		
+		FCollisionObjectQueryParams ObjectQueryParams;
+		ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+		ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldStatic);
+		ObjectQueryParams.AddObjectTypesToQuery(ECC_Pawn);
+
+		FCollisionQueryParams Params;
+		//ignore the player
+		Params.AddIgnoredActor(this);
+		
+		FCollisionShape SphereShape;
+		SphereShape.SetSphere(20.0f);
+		FHitResult Hit;
+
+		FVector TraceStart = CameraComp->GetComponentLocation();
+		//endpoint set far into look at distance but not too far. Still adjusts projectile towards crosshair on miss over time.
+		FVector TraceEnd = TraceStart + (GetControlRotation().Vector() * 5000);
+
+		//returns true on hit
+		bool bHasHit = GetWorld()->SweepSingleByObjectType(Hit, TraceStart, TraceEnd, FQuat::Identity, ObjectQueryParams, SphereShape, Params);
+
+		if(bHasHit)
+		{
+			TraceEnd = Hit.ImpactPoint;
+		}
+		//Finds a new direction/rotation from hand to impact point in the world from line trace
+		FRotator ProjectileRot = FRotationMatrix::MakeFromX(TraceEnd - HandLocation).Rotator();
+		FTransform SpawnTM = FTransform(ProjectileRot, HandLocation);
+		GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+	}
+}
+
 
 void ADBCharacter::PrimaryInteract()
 {

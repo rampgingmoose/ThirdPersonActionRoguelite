@@ -9,6 +9,7 @@
 class UCameraComponent;
 class USpringArmComponent;
 class UDBInteractionComponent;
+class UDBAttributesComponent;
 class UAnimMontage;
 
 UCLASS()
@@ -20,25 +21,32 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	TSubclassOf<AActor> ProjectileClass;
 
+	UPROPERTY(EditAnywhere, Category = "Dash")
+	TSubclassOf<AActor> DashProjectileClass;
+
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	UAnimMontage* AttackAnim;
 
 	FTimerHandle TimerHandle_PrimaryAttack;
+	FTimerHandle TimerHandle_Dash;
 
 public:
 	// Sets default values for this character's properties
 	ADBCharacter();
 
+	UPROPERTY(VisibleAnywhere)
+	UCameraComponent* CameraComp;
+
 protected:
 	
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
-	
-	UPROPERTY(VisibleAnywhere)
-	UCameraComponent* CameraComp;
 
 	UPROPERTY(VisibleAnywhere)
 	UDBInteractionComponent* InteractionComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UDBAttributesComponent* AttributesComp;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -48,6 +56,9 @@ protected:
 	void PrimaryAttack();
 	void PrimaryAttack_TimeElapsed();
 	void PrimaryInteract();
+	void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
+	void Dash();
+	void Dash_TimeElapsed();
 
 public:	
 	// Called every frame
