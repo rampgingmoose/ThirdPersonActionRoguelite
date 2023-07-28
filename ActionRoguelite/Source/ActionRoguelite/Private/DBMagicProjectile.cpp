@@ -23,7 +23,7 @@ ADBMagicProjectile::ADBMagicProjectile()
 void ADBMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if(OtherActor)
+	if(OtherActor && OtherActor != GetInstigator())
 	{
 		UDBAttributesComponent *AttributeComp = Cast<UDBAttributesComponent>(OtherActor->GetComponentByClass(UDBAttributesComponent::StaticClass()));
 		if(AttributeComp)

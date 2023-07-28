@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "DBAttributesComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChanged, AActor*, insitgatorActor, UDBAttributesComponent*, OwningComp,float, NewHealth, float, Delta);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ACTIONROGUELITE_API UDBAttributesComponent : public UActorComponent
@@ -23,6 +24,9 @@ protected:
 
 public:
 
+	UPROPERTY(BlueprintAssignable)
+	FOnHealthChanged OnHealthChanged;
+	
 	//ApplyHealthChange returns a boolean as we want to know whether or not the change actually succeeded
 	//We're interested in this as the character may be invincible, dead, etc in which case we would not want damage applied.
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
