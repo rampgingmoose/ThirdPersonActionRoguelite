@@ -26,6 +26,7 @@ void ADBMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent
 	if(OtherActor && OtherActor != GetInstigator())
 	{
 		UDBAttributesComponent *AttributeComp = Cast<UDBAttributesComponent>(OtherActor->GetComponentByClass(UDBAttributesComponent::StaticClass()));
+		
 		if(AttributeComp)
 		{
 			AttributeComp->ApplyHealthChange(-20.0f);

@@ -2,7 +2,6 @@
 
 
 #include "DBCharacter.h"
-#include "DBCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"

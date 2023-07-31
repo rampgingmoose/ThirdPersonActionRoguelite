@@ -14,7 +14,7 @@ bool UDBAttributesComponent::ApplyHealthChange(float Delta)
 {
 	Health += Delta;
 
-	OnHealthChanged.Broadcast(nullptr, this, Health, Delta);
+	OnHealthDamaged.Broadcast(nullptr, this, Health, Delta);
 	
 	return true; //Currently no alternate test cases that would return false. 
 }
