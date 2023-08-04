@@ -28,7 +28,7 @@ void ADBTargetDummy::OnHealthDamaged(AActor* InstigatorActor, UDBAttributesCompo
 {
 	if(Delta < 0.0f)
 	{
-		MeshComp->SetScalarParameterValueOnMaterials("TimeToHit", GetWorld()->TimeSeconds);	
+		MeshComp->SetScalarParameterValueOnMaterials("HitTime", GetWorld()->TimeSeconds);	
 	}
 }
 

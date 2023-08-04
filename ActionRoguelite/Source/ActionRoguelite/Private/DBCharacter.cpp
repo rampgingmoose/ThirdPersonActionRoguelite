@@ -31,18 +31,11 @@ ADBCharacter::ADBCharacter()
 	bUseControllerRotationYaw = false;
 }
 
-// Called when the game starts or when spawned
-void ADBCharacter::BeginPlay()
+void ADBCharacter::PostInitializeComponents()
 {
-	Super::BeginPlay();
-	
-}
+	Super::PostInitializeComponents();
 
-// Called every frame
-void ADBCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
+	AttributesComp->OnHealthDamaged.AddDynamic(this, &ADBCharacter::OnHealthDamaged);
 }
 
 // Called to bind functionality to input
@@ -57,8 +50,10 @@ void ADBCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ADBCharacter::PrimaryAttack);
+	PlayerInputComponent->BindAction("PrimaryDash", IE_Pressed, this, &ADBCharacter::Dash);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &ADBCharacter::PrimaryInteract);
+	PlayerInputComponent->BindAction("SecondaryAttack", IE_Pressed, this, &ADBCharacter::BlackHole);
 }
 
 void ADBCharacter::MoveForward(float Value)
@@ -107,6 +102,16 @@ void ADBCharacter::Dash_TimeElapsed()
 	SpawnProjectile(DashProjectileClass);
 }
 
+void ADBCharacter::BlackHole()
+{
+	PlayAnimMontage(AttackAnim);
+	GetWorldTimerManager().SetTimer(TimeHandle_BlackHole, this, &ADBCharacter::BlackHole_TimeElapsed, 0.2f);
+}
+
+void ADBCharacter::BlackHole_TimeElapsed()
+{
+	SpawnProjectile(BlackHoleProjectileClass);
+}
 
 void ADBCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 {
@@ -144,9 +149,22 @@ void ADBCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 		//Finds a new direction/rotation from hand to impact point in the world from line trace
 		FRotator ProjectileRot = FRotationMatrix::MakeFromX(TraceEnd - HandLocation).Rotator();
 		FTransform SpawnTM = FTransform(ProjectileRot, HandLocation);
-		GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+		GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTM, SpawnParams);
 	}
 }
+
+void ADBCharacter::OnHealthDamaged(AActor* InstigatorActor, UDBAttributesComponent* OwningComp, float NewHealth,
+	float Delta)
+{
+
+	if(NewHealth <= 0 && Delta < 0)
+	{
+		APlayerController *playerControls = Cast<APlayerController>(GetController());
+		DisableInput(playerControls);
+	}	
+}
+
+
 
 
 void ADBCharacter::PrimaryInteract()

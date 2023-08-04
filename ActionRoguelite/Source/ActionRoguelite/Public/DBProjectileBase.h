@@ -20,13 +20,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	UParticleSystem* ImpactVFX;
 
-	UPROPERTY(BlueprintReadOnly,EditDefaultsOnly, Category = "Components")
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Components")
 	USphereComponent* SphereComp;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Components")
 	UProjectileMovementComponent* MoveComp;
 
-	UPROPERTY(EditDefaultsOnly, category = "Components")
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, category = "Components")
 	UParticleSystemComponent* EffectComp;
 
 	UFUNCTION()

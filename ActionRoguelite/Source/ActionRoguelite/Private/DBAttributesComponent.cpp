@@ -9,6 +9,11 @@ UDBAttributesComponent::UDBAttributesComponent()
 	Health = 100.0f;
 }
 
+bool UDBAttributesComponent::isAlive() const
+{
+	return Health > 0.0f;
+}
+
 
 bool UDBAttributesComponent::ApplyHealthChange(float Delta)
 {

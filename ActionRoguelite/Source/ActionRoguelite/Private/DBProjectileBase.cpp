@@ -33,7 +33,7 @@ void ADBProjectileBase::OnActorHit(UPrimitiveComponent* HitComponent, AActor* Ot
 void ADBProjectileBase::Explode_Implementation()
 {
 	//Check to make sure we aren't already being destroyed
-	//adding ensure in case we encounter this situation
+	//adding ensure in case we encounter this situation so Explode() isn't called twice.
 	if(ensure(IsValid(this)))
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation());

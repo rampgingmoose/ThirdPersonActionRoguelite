@@ -2,12 +2,9 @@
 
 
 #include "DBMagicProjectile.h"
-
 #include "DBAttributesComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "Particles/ParticleSystemComponent.h"
-#include "DBAttributesComponent.h"
 
 // Sets default values
 ADBMagicProjectile::ADBMagicProjectile()
@@ -18,6 +15,8 @@ ADBMagicProjectile::ADBMagicProjectile()
 	MoveComp->InitialSpeed = 2000.0f;
 
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &ADBMagicProjectile::OnActorOverlap);
+
+	projectileDamage = -20.0f;
 }
 
 void ADBMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -29,9 +28,9 @@ void ADBMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent
 		
 		if(AttributeComp)
 		{
-			AttributeComp->ApplyHealthChange(-20.0f);
+			AttributeComp->ApplyHealthChange(projectileDamage);
 
-			Destroy();
+			Explode();
 		}
 	}
 }

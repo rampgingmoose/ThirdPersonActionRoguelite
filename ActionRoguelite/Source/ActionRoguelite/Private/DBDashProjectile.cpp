@@ -34,10 +34,10 @@ void ADBDashProjectile::Explode_Implementation()
 	SetActorEnableCollision(false);
 
 	FTimerHandle TimerHandle_DelayedTeleport;
-	GetWorldTimerManager().SetTimer(TimerHandle_DelayedTeleport, this, &ADBDashProjectile::TeleportInsitgator, TeleportDelay);
+	GetWorldTimerManager().SetTimer(TimerHandle_DelayedTeleport, this, &ADBDashProjectile::TeleportInstigator, TeleportDelay);
 }
 
-void ADBDashProjectile::TeleportInsitgator()
+void ADBDashProjectile::TeleportInstigator()
 {
 	AActor* ActorToTeleport = GetInstigator();
 	if(ensure(ActorToTeleport))

@@ -8,8 +8,38 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="137ea1b9-5272-46a8-a0a6-c4014d774755" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/ActionRoguelite.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/ActionRoguelite.uproject" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultInput.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultInput.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Materials/MI_PBRDemo.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Materials/M_DissolveEffect.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Materials/M_HitFlashDemo.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Materials/M_HitFlashDemo_Inst.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Materials/M_PBRDemo.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Materials/M_SinWave.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Materials/M_SinWaveBP.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ParagonGideon/Characters/Heroes/Gideon/Gideon_AnimBlueprint.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ParagonGideon/Characters/Heroes/Gideon/Gideon_AnimBlueprint.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ParagonGideon/FX/Particles/Gideon/Abilities/Ultimate/FX/P_Gideon_Ultimate.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Roguelite/ExplosiveBarrelBP.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Roguelite/ExplosiveBarrelBP.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Roguelite/LeverBP.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Roguelite/LeverBP.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Roguelite/MagicProjectileBP.uasset" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Roguelite/Maps/TestLevel.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Roguelite/Maps/TestLevel.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Roguelite/PlayerCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Roguelite/PlayerCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Roguelite/SineWaveBP.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Roguelite/SineWaveBP.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Roguelite/TargetDumBP.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Roguelite/TargetDumBP.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Roguelite/TreasureChestBP.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Roguelite/TreasureChestBP.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UI/CrossHair_Widget.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UI/PlayerHealth_Widget.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ActionRoguelite/Private/DBAttributesComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ActionRoguelite/Private/DBAttributesComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ActionRoguelite/Private/DBCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ActionRoguelite/Private/DBCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ActionRoguelite/Private/DBDashProjectile.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ActionRoguelite/Private/DBDashProjectile.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ActionRoguelite/Private/DBMagicProjectile.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ActionRoguelite/Private/DBMagicProjectile.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ActionRoguelite/Private/DBProjectileBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ActionRoguelite/Private/DBProjectileBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ActionRoguelite/Private/DBTargetDummy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ActionRoguelite/Private/DBTargetDummy.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ActionRoguelite/Public/DBAttributesComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ActionRoguelite/Public/DBAttributesComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ActionRoguelite/Public/DBCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ActionRoguelite/Public/DBCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ActionRoguelite/Public/DBDashProjectile.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ActionRoguelite/Public/DBDashProjectile.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ActionRoguelite/Public/DBMagicProjectile.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ActionRoguelite/Public/DBMagicProjectile.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ActionRoguelite/Public/DBProjectileBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ActionRoguelite/Public/DBProjectileBase.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,6 +153,7 @@
       <workItem from="1688762691742" duration="880000" />
       <workItem from="1689019105064" duration="1735000" />
       <workItem from="1690831996554" duration="13000" />
+      <workItem from="1691159150343" duration="153000" />
     </task>
     <servers />
   </component>
