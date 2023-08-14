@@ -11,6 +11,7 @@ class USpringArmComponent;
 class UDBInteractionComponent;
 class UDBAttributesComponent;
 class UAnimMontage;
+class UParticleSystem;
 
 UCLASS()
 class ACTIONROGUELITE_API ADBCharacter : public ACharacter
@@ -51,6 +52,13 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UDBAttributesComponent* AttributesComp;
+
+	//Particles spawned during attack animation
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	UParticleSystem* CastingEffect;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Effects")
+	FName HandSocketName;
 	
 	void MoveForward(float Value);
 	void MoveRight(float Value);
@@ -62,6 +70,7 @@ protected:
 	void BlackHole();
 	void BlackHole_TimeElapsed();
 	void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
+	void StartAttackEffects();
 	
 	UFUNCTION()
 	void OnHealthDamaged(AActor* InstigatorActor, UDBAttributesComponent* OwningComp, float NewHealth, float Delta);

@@ -8,6 +8,7 @@
 #include "DBInteractionComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "DBAttributesComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ADBCharacter::ADBCharacter()
@@ -29,6 +30,8 @@ ADBCharacter::ADBCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	bUseControllerRotationYaw = false;
+
+	HandSocketName = "Muzzle_01";
 }
 
 void ADBCharacter::PostInitializeComponents()
@@ -75,6 +78,15 @@ void ADBCharacter::MoveRight(float Value)
 	AddMovementInput(RightVector, Value);
 }
 
+void ADBCharacter::StartAttackEffects()
+{
+	PlayAnimMontage(AttackAnim);
+
+	UGameplayStatics::SpawnEmitterAttached(CastingEffect, GetMesh(), HandSocketName, FVector::ZeroVector,
+		FRotator::ZeroRotator, EAttachLocation::SnapToTarget);
+}
+
+
 void ADBCharacter::PrimaryAttack()
 {
 	PlayAnimMontage(AttackAnim);
@@ -117,7 +129,7 @@ void ADBCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 {
 	if(ensureAlways(ClassToSpawn))
 	{
-		FVector HandLocation= GetMesh()->GetSocketLocation("Muzzle_01");
+		FVector HandLocation= GetMesh()->GetSocketLocation(HandSocketName);
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		SpawnParams.Instigator = this;
@@ -153,19 +165,16 @@ void ADBCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 	}
 }
 
-void ADBCharacter::OnHealthDamaged(AActor* InstigatorActor, UDBAttributesComponent* OwningComp, float NewHealth,
-	float Delta)
+void ADBCharacter::OnHealthDamaged(AActor* InstigatorActor, UDBAttributesComponent* OwningComp, float NewHealth, float Delta)
 {
-
+	GetMesh()->SetScalarParameterValueOnMaterials("HitTime", GetWorld()->TimeSeconds);
+	
 	if(NewHealth <= 0 && Delta < 0)
 	{
 		APlayerController *playerControls = Cast<APlayerController>(GetController());
 		DisableInput(playerControls);
 	}	
 }
-
-
-
 
 void ADBCharacter::PrimaryInteract()
 {

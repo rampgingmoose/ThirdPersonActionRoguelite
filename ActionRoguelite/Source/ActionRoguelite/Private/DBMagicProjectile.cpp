@@ -46,6 +46,5 @@ void ADBMagicProjectile::BeginPlay()
 void ADBMagicProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 

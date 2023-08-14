@@ -3,26 +3,65 @@
 
 #include "AI/DBAICharacter.h"
 
+#include "AIController.h"
+#include "BrainComponent.h"
+#include "DBAttributesComponent.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "Perception/PawnSensingComponent.h"
+#include "DrawDebugHelpers.h"
+
 // Sets default values
 ADBAICharacter::ADBAICharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>("PawnSensingComp");
 
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	AttributesComp = CreateDefaultSubobject<UDBAttributesComponent>("AttributesComp");
 }
 
-// Called when the game starts or when spawned
-void ADBAICharacter::BeginPlay()
+void ADBAICharacter::PostInitializeComponents()
 {
-	Super::BeginPlay();
+	Super::PostInitializeComponents();
 	
+	PawnSensingComp->OnSeePawn.AddDynamic(this, &ADBAICharacter::OnPawnSeen);
+	AttributesComp->OnHealthDamaged.AddDynamic(this, &ADBAICharacter::OnHealthDamaged);
 }
 
-// Called every frame
-void ADBAICharacter::Tick(float DeltaTime)
+void ADBAICharacter::OnPawnSeen(APawn* Pawn)
 {
-	Super::Tick(DeltaTime);
+	AAIController* AIC = Cast<AAIController>(GetController());
 
+	if(AIC)
+	{
+		AIC->GetBlackboardComponent()->SetValueAsObject("TargetActor", Pawn);
+
+		DrawDebugString(GetWorld(), GetActorLocation(), "PLAYER SPOTTED", nullptr, FColor::White, 4.0f, true);
+	}
+}
+
+void ADBAICharacter::OnHealthDamaged(AActor* InsitgatorActor, UDBAttributesComponent* OwningComp, float NewHealth, float Delta)
+{
+	if(Delta < 0)
+	{
+		if(NewHealth <= 0 )
+		{
+			//stop BT
+			AAIController* AIC = Cast<AAIController>(GetController());
+			if(AIC)
+			{
+				/*BrainComponent is the base class of the behavior tree component.
+				 *"Killed" is the reason for stopping the behavior tree logic,
+				this has no bearing on the execution of code, just for debugging purposes*/
+				AIC->GetBrainComponent()->StopLogic("Killed");
+			}
+			//ragdoll
+			GetMesh()->SetAllBodiesSimulatePhysics(true);
+			GetMesh()->SetCollisionProfileName("Ragdoll");
+			
+			//set lifespan
+			SetLifeSpan(10.0f);
+		}
+	}
 }
 
 

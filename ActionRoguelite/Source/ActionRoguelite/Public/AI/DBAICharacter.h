@@ -3,9 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DBAttributesComponent.h"
 #include "GameFramework/Character.h"
 #include "DBAICharacter.generated.h"
 
+class UDBAttributesComponent;
+class UPawnSensingComponent;
 UCLASS()
 class ACTIONROGUELITE_API ADBAICharacter : public ACharacter
 {
@@ -16,11 +19,18 @@ public:
 	ADBAICharacter();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void PostInitializeComponents() override;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UPawnSensingComponent *PawnSensingComp;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UDBAttributesComponent* AttributesComp;
+
+	UFUNCTION()
+	void OnPawnSeen(APawn* Pawn);
+
+	UFUNCTION()
+	void OnHealthDamaged(AActor* InsitgatorActor, UDBAttributesComponent* OwningComp, float NewHealth, float Delta);
 };

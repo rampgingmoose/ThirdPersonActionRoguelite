@@ -9,6 +9,9 @@
 class USphereComponent;
 class UParticleSystem;
 class UProjectileMovementComponent;
+class UAudioComponent;
+class USoundCue;
+class UCameraShakeBase;
 
 UCLASS(Abstract)
 class ACTIONROGUELITE_API ADBProjectileBase : public AActor
@@ -28,6 +31,21 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, category = "Components")
 	UParticleSystemComponent* EffectComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects|Shake")
+	TSubclassOf<UCameraShakeBase> ImpactShake;
+
+	UPROPERTY(EditDefaultsOnly, Category= "Effects|Shake")
+	float ImpactShakeInnerRadius;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Effects|Shake")
+	float ImpactShakeOuterRadius;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	USoundCue* ImpactSound;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UAudioComponent* AudioComp;
 
 	UFUNCTION()
 	virtual void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent *OtherComp, FVector NormalImpulse, const FHitResult& Hit);

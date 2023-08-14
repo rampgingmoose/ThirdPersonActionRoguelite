@@ -21,7 +21,7 @@ public:
 
 	float TargetPitch;
 
-	void Interact_Implementation(APawn* InstigatorPawn) override;
+	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 
 protected:
 	// Called when the game starts or when spawned
