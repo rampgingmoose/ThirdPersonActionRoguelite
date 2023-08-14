@@ -25,7 +25,7 @@ void ADBPowerup_HealthPotion::Interact_Implementation(APawn* InstigatorPawn)
 	//Check to make sure player is not already max health
 	if(ensure(AttributesComponent) && !AttributesComponent->IsFullHealth())
 	{
-		AttributesComponent->ApplyHealthChange(HealAmount);
+		AttributesComponent->ApplyHealthChange(this, HealAmount);
 		HideAndCooldownPowerup();
 	}
 }

@@ -27,22 +27,32 @@ void ADBAICharacter::PostInitializeComponents()
 	AttributesComp->OnHealthDamaged.AddDynamic(this, &ADBAICharacter::OnHealthDamaged);
 }
 
-void ADBAICharacter::OnPawnSeen(APawn* Pawn)
+void ADBAICharacter::SetTargetActor(AActor* newTarget)
 {
 	AAIController* AIC = Cast<AAIController>(GetController());
 
 	if(AIC)
 	{
-		AIC->GetBlackboardComponent()->SetValueAsObject("TargetActor", Pawn);
-
-		DrawDebugString(GetWorld(), GetActorLocation(), "PLAYER SPOTTED", nullptr, FColor::White, 4.0f, true);
+		AIC->GetBlackboardComponent()->SetValueAsObject("TargetActor", newTarget);
 	}
+}
+
+void ADBAICharacter::OnPawnSeen(APawn* Pawn)
+{
+	SetTargetActor(Pawn);
+
+	//DrawDebugString(GetWorld(), GetActorLocation(), "PLAYER SPOTTED", nullptr, FColor::White, 4.0f, true);
 }
 
 void ADBAICharacter::OnHealthDamaged(AActor* InsitgatorActor, UDBAttributesComponent* OwningComp, float NewHealth, float Delta)
 {
 	if(Delta < 0)
 	{
+		if(InsitgatorActor != this)
+		{
+			SetTargetActor(InsitgatorActor);
+		}
+		
 		if(NewHealth <= 0 )
 		{
 			//stop BT

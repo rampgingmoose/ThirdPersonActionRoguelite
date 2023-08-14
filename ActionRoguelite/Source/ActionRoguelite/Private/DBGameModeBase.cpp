@@ -33,7 +33,7 @@ void ADBGameModeBase::SpawnTimerElapsed()
 	{
 		ADBAICharacter* Bot = *It;
 
-		UDBAttributesComponent *AttributeComp = Cast<UDBAttributesComponent>(Bot->GetComponentByClass(UDBAttributesComponent::StaticClass()));
+		UDBAttributesComponent *AttributeComp = UDBAttributesComponent::GetAttributes(Bot);
 		if(ensure(AttributeComp) && AttributeComp->isAlive())
 		{
 			NumOfAliveBots++;

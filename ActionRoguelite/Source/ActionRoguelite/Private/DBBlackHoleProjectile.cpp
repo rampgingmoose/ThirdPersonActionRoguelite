@@ -45,7 +45,7 @@ void ADBBlackHoleProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedCompo
 		
 		if(AttributesComp)
 		{
-			AttributesComp->ApplyHealthChange(-50.0f);
+			AttributesComp->ApplyHealthChange(GetInstigator(),-50.0f);
 		}
 	}
 }

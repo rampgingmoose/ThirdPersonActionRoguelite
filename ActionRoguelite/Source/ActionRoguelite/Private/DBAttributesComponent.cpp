@@ -16,7 +16,7 @@ bool UDBAttributesComponent::isAlive() const
 }
 
 
-bool UDBAttributesComponent::ApplyHealthChange(float Delta)
+bool UDBAttributesComponent::ApplyHealthChange(AActor* InstigatorActor,float Delta)
 {
 	//Store old health value to find difference between current health and old health for UMG component
 	float OldHealth = Health;
@@ -27,7 +27,7 @@ bool UDBAttributesComponent::ApplyHealthChange(float Delta)
 	//Difference between old health and new health is Displayed on UMG component. IE oldhealth = 100 and current health = 80
 	//oldhealth - current health = 20. 20 damage is sent to UMG text component to be displayed on UI.
 	float ActualDelta = Health - OldHealth;
-	OnHealthDamaged.Broadcast(nullptr, this, Health, ActualDelta);
+	OnHealthDamaged.Broadcast(InstigatorActor, this, Health, ActualDelta);
 	
 	return !ActualDelta != 0;
 }
@@ -41,4 +41,30 @@ bool UDBAttributesComponent::IsFullHealth() const
 {
 	return Health == MaxHealth;
 }
+
+UDBAttributesComponent* UDBAttributesComponent::GetAttributes(AActor* FromActor)
+{
+	if(FromActor)
+	{
+		return Cast<UDBAttributesComponent>(FromActor->GetComponentByClass(UDBAttributesComponent::StaticClass()));
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+bool UDBAttributesComponent::IsActorAlive(AActor* Actor)
+{
+	UDBAttributesComponent* actorAttributes = GetAttributes(Actor);
+	
+	if(actorAttributes)
+	{
+		return actorAttributes->isAlive();
+	}
+
+	//If actorAttributes == nullptr then assume that actor is dead, so isAlive == false.
+	return false;
+}
+
 

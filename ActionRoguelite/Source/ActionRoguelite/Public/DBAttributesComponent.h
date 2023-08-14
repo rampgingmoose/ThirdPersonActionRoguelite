@@ -17,6 +17,12 @@ public:
 	// Sets default values for this component's properties
 	UDBAttributesComponent();
 
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+	static UDBAttributesComponent* GetAttributes(AActor* FromActor);
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes", meta = (DisplayName = "isAlive"))
+	static bool IsActorAlive(AActor* Actor);
+
 protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
@@ -37,7 +43,7 @@ public:
 	 *ApplyHealthChange returns a boolean as we want to know whether or not the change actually succeeded. We're interested in this as the character may be invincible, dead, etc in which case we would not want damage applied.
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
-	bool ApplyHealthChange(float Delta); //Where delta is the difference we want to apply to the health
+	bool ApplyHealthChange(AActor* InstigatorActor,float Delta); //Where delta is the difference we want to apply to the health
 
 	UFUNCTION(BlueprintCallable)
 	int GetMaxHealth() const;

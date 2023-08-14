@@ -28,7 +28,7 @@ void ADBMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent
 		
 		if(AttributeComp)
 		{
-			AttributeComp->ApplyHealthChange(projectileDamage);
+			AttributeComp->ApplyHealthChange(GetInstigator(),projectileDamage);
 
 			Explode();
 		}
